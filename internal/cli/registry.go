@@ -20,7 +20,6 @@ func (c *Commands) Run(s *State, cmd Command) error {
 	if !exists {
 		return fmt.Errorf("command '%s' does not exist", cmd.Name)
 	}
-
 	return handler(s, cmd)
 }
 

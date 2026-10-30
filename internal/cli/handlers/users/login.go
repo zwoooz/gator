@@ -10,6 +10,7 @@ import (
 func login(s *cli.State, cmd cli.Command) error {
 	if len(cmd.Args) != 1 {
 		return fmt.Errorf("expected 1 argument, found %v", len(cmd.Args))
+		// TODO: print help/usage here OR even better do that in main
 	}
 	username := cmd.Args[0]
 

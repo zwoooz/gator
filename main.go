@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/zwoooz/gator/internal/cli"
 	"github.com/zwoooz/gator/internal/cli/handlers/users"
@@ -14,7 +15,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("error reading config: %v", err)
 	}
-	fmt.Printf("Config: %+v\n", cfg)
 
 	s := cli.State{
 		Cfg: &cfg,
@@ -23,4 +23,16 @@ func main() {
 	cmds := cli.NewCommands()
 
 	users.Register(cmds)
+
+	cmd, err := cli.ParseInput(os.Args[1:])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = cmds.Run(&s, cmd)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }

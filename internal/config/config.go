@@ -64,10 +64,10 @@ func write(cfg Config) error {
 }
 
 func getConfigPath() (string, error) {
-	configDir, err := os.UserConfigDir()
+	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
 
-	return filepath.Join(configDir, "gator", configFileName), nil
+	return filepath.Join(homeDir, configFileName), nil
 }
