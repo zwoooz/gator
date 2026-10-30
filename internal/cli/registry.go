@@ -1,20 +1,29 @@
+// Package cli provides the shared building blocks for the command-line interface
 package cli
 
 import "fmt"
 
-type commands struct {
-	handlers map[string]func(*state, command) error
+type Commands struct {
+	handlers map[string]Handler
 }
 
-func (c *commands) run(s *state, cmd command) error {
-	handler, exists := c.handlers[cmd.name]
+type Handler func(*State, Command) error
+
+func NewCommands() *Commands {
+	return &Commands{
+		handlers: make(map[string]Handler),
+	}
+}
+
+func (c *Commands) Run(s *State, cmd Command) error {
+	handler, exists := c.handlers[cmd.Name]
 	if !exists {
-		return fmt.Errorf("command '%s' does not exist", cmd.name)
+		return fmt.Errorf("command '%s' does not exist", cmd.Name)
 	}
 
 	return handler(s, cmd)
 }
 
-func (c *commands) register(name string, f func(*state, command) error) {
-	c.handlers[name] = f
+func (c *Commands) Register(name string, h Handler) {
+	c.handlers[name] = h
 }

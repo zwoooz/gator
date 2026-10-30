@@ -1,6 +1,6 @@
 package cli
 
-type command struct {
-	name string
-	args []string
+type Command struct {
+	Name string
+	Args []string
 }

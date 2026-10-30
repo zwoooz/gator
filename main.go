@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/zwoooz/gator/internal/cli"
+	"github.com/zwoooz/gator/internal/cli/handlers/users"
 	"github.com/zwoooz/gator/internal/config"
 )
 
@@ -14,11 +16,11 @@ func main() {
 	}
 	fmt.Printf("Config: %+v\n", cfg)
 
-	s := state{
-		cfg: &cfg,
+	s := cli.State{
+		Cfg: &cfg,
 	}
 
-	cmd := commands{
-		handlers: make(map[string]func(*state, command) error),
-	}
+	cmds := cli.NewCommands()
+
+	users.Register(cmds)
 }

@@ -1,3 +1,4 @@
+// Package config reads and writes gator's configuration file in the user's home directory
 package config
 
 import (
