@@ -14,14 +14,11 @@ func main() {
 	}
 	fmt.Printf("Config: %+v\n", cfg)
 
-	err = cfg.SetUser("zwoooz")
-	if err != nil {
-		log.Fatalf("error setting user: %v\n", err)
+	s := state{
+		cfg: &cfg,
 	}
 
-	cfg, err = config.Read()
-	if err != nil {
-		log.Fatalf("error reading config: %v", err)
+	cmd := commands{
+		handlers: make(map[string]func(*state, command) error),
 	}
-	fmt.Printf("Config: %+v", cfg)
 }
