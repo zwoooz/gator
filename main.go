@@ -23,6 +23,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error opening database: %v", err)
 	}
+	defer db.Close()
 
 	dbQueries := database.New(db)
 

@@ -2,6 +2,9 @@
 package users
 
 import (
+	"context"
+	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/zwoooz/gator/internal/cli"
@@ -12,13 +15,21 @@ func login(s *cli.State, cmd cli.Command) error {
 		return fmt.Errorf("expected 1 argument, found %v", len(cmd.Args))
 		// TODO: print help/usage here OR even better do that in main
 	}
-	username := cmd.Args[0]
+	name := cmd.Args[0]
 
-	err := s.Cfg.SetUser(username)
+	_, err := s.DB.GetUser(context.Background(), name)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return fmt.Errorf("user '%s' does not exist", name)
+		}
+		return err
+	}
+
+	err = s.Cfg.SetUser(name)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Active user is now: %s\n", username)
+	fmt.Printf("Active user is now: %s\n", name)
 
 	return nil
 }

@@ -9,6 +9,8 @@ type entry struct {
 
 var entries = []entry{
 	{name: "login", handler: login},
+	{name: "register", handler: register},
+	{name: "reset", handler: reset},
 }
 
 func Register(cmds *cli.Commands) {
