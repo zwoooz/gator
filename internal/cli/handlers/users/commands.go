@@ -22,6 +22,12 @@ var specs = []cli.Spec{
 		Description: "Delete all users (asks for confirmation)",
 		Handler:     reset,
 	},
+	{
+		Name:        "users",
+		Usage:       "users",
+		Description: "Lists every user in the database, shows who is currently logged in",
+		Handler:     users,
+	},
 }
 
 // Register adds the user management commands to the registry
