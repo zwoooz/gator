@@ -5,6 +5,7 @@ import (
 	"github.com/zwoooz/gator/internal/database"
 )
 
+// State holds the application dependencies shared by all command handlers
 type State struct {
 	Cfg *config.Config
 	DB  *database.Queries

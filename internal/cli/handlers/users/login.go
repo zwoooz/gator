@@ -1,4 +1,3 @@
-// Package users contains the command handlers for user management
 package users
 
 import (
@@ -12,8 +11,7 @@ import (
 
 func login(s *cli.State, cmd cli.Command) error {
 	if len(cmd.Args) != 1 {
-		return fmt.Errorf("expected 1 argument, found %v", len(cmd.Args))
-		// TODO: print help/usage here OR even better do that in main
+		return fmt.Errorf("%w: expected 1 argument, found %v", cli.ErrUsage, len(cmd.Args))
 	}
 	name := cmd.Args[0]
 

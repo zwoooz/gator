@@ -2,49 +2,76 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	_ "github.com/lib/pq"
 	"github.com/zwoooz/gator/internal/cli"
 	"github.com/zwoooz/gator/internal/cli/handlers/users"
+	"github.com/zwoooz/gator/internal/cli/handlers/util"
 	"github.com/zwoooz/gator/internal/config"
 	"github.com/zwoooz/gator/internal/database"
 )
 
 func main() {
+	os.Exit(run())
+}
+
+// run wires everything up and returns the exit code
+// os.Exit lives only in main
+func run() int {
 	cfg, err := config.Read()
 	if err != nil {
-		log.Fatalf("error reading config: %v", err)
+		fmt.Fprintf(os.Stderr, "error reading config: %v\n", err)
+		return 1
 	}
 
 	db, err := sql.Open("postgres", cfg.DBURL)
 	if err != nil {
-		log.Fatalf("error opening database: %v", err)
+		fmt.Fprintf(os.Stderr, "error opening database: %v\n", err)
+		return 1
 	}
-	defer db.Close()
-
-	dbQueries := database.New(db)
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error closing database: %v\n", err)
+		}
+	}()
 
 	s := cli.State{
 		Cfg: &cfg,
-		DB:  dbQueries,
+		DB:  database.New(db),
 	}
 
 	cmds := cli.NewCommands()
-
 	users.Register(cmds)
+	util.Register(cmds)
 
 	cmd, err := cli.ParseInput(os.Args[1:])
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		return handleResult(err, cmds, &s, cmd)
 	}
 
-	err = cmds.Run(&s, cmd)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+	return handleResult(cmds.Run(&s, cmd), cmds, &s, cmd)
+}
+
+// handleResult prints err, runs help for usage errors,
+// and maps the outcome to an exit code:
+// 0 success, 1 failure, 2 incorrect usage
+func handleResult(err error, cmds *cli.Commands, s *cli.State, cmd cli.Command) int {
+	if err == nil {
+		return 0
 	}
+	fmt.Fprintln(os.Stderr, err)
+
+	if errors.Is(err, cli.ErrUsage) {
+		help := cli.Command{Name: "help", Args: []string{cmd.Name}}
+		err := cmds.Run(s, help)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+		return 2
+	}
+	return 1
 }

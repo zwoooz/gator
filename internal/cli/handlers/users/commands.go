@@ -1,20 +1,33 @@
+// Package users contains the command handlers for user management
 package users
 
 import "github.com/zwoooz/gator/internal/cli"
 
-type entry struct {
-	name    string
-	handler cli.Handler
+var specs = []cli.Spec{
+	{
+		Name:        "login",
+		Usage:       "login [username]",
+		Description: "Set the current active user",
+		Handler:     login,
+	},
+	{
+		Name:        "register",
+		Usage:       "register [username]",
+		Description: "Create a new user and log in as them",
+		Handler:     register,
+	},
+	{
+		Name:        "reset",
+		Usage:       "reset",
+		Description: "Delete all users (asks for confirmation)",
+		Handler:     reset,
+	},
 }
 
-var entries = []entry{
-	{name: "login", handler: login},
-	{name: "register", handler: register},
-	{name: "reset", handler: reset},
-}
-
+// Register adds the user management commands to the registry
 func Register(cmds *cli.Commands) {
-	for _, e := range entries {
-		cmds.Register(e.name, e.handler)
+	for _, spec := range specs {
+		spec.Category = "Users"
+		cmds.Register(spec)
 	}
 }

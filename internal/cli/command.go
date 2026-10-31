@@ -10,19 +10,15 @@ type Command struct {
 	Args []string
 }
 
+// ParseInput turns raw CLI arguments into a Command
+// Only the name is lowercased, args are untouched
 func ParseInput(input []string) (Command, error) {
 	if len(input) < 1 {
-		return Command{}, fmt.Errorf("no command specified")
-		// TODO: call help/usage command here once created
-	}
-
-	// WARN: This will ruin URLs if we will be taking those as arguments
-	for i, str := range input {
-		input[i] = strings.ToLower(str)
+		return Command{}, fmt.Errorf("%w: no command specified", ErrUsage)
 	}
 
 	return Command{
-		Name: input[0],
+		Name: strings.ToLower(input[0]),
 		Args: input[1:],
 	}, nil
 }
