@@ -36,13 +36,13 @@ func register(s *cli.State, cmd cli.Command) error {
 
 	user, err := s.DB.CreateUser(context.Background(), params)
 	if err != nil {
-		return err
+		return fmt.Errorf("error creating user: %w", err)
 	}
 	fmt.Printf("Created user: %v\n", user)
 
 	err = s.Cfg.SetUser(name)
 	if err != nil {
-		return err
+		return fmt.Errorf("error setting current user: %w", err)
 	}
 	fmt.Printf("Active user is now: %s\n", name)
 

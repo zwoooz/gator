@@ -26,7 +26,7 @@ func reset(s *cli.State, cmd cli.Command) error {
 
 	err = s.DB.ResetUsers(context.Background())
 	if err != nil {
-		return err
+		return fmt.Errorf("error resetting users: %w", err)
 	}
 	fmt.Println("Delted all rows in users table")
 

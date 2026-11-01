@@ -5,9 +5,21 @@ import "github.com/zwoooz/gator/internal/cli"
 var specs = []cli.Spec{
 	{
 		Name:        "agg",
-		Usage:       "agg [URL]",
+		Usage:       "agg",
 		Description: "",
 		Handler:     agg,
+	},
+	{
+		Name:        "addfeed",
+		Usage:       "addfeed [name] [URL]",
+		Description: "Adds feed to the current logged in user",
+		Handler:     addFeed,
+	},
+	{
+		Name:        "feeds",
+		Usage:       "feeds",
+		Description: "List all tracked feeds and who created them",
+		Handler:     feeds,
 	},
 }
 

@@ -14,7 +14,7 @@ func users(s *cli.State, cmd cli.Command) error {
 
 	users, err := s.DB.GetUsers(context.Background())
 	if err != nil {
-		return err
+		return fmt.Errorf("error getting users: %w", err)
 	}
 	if len(users) == 0 {
 		return fmt.Errorf("no registered users")

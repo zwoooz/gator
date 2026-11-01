@@ -16,7 +16,7 @@ func agg(s *cli.State, cmd cli.Command) error {
 
 	feed, err := s.RssClient.FetchFeed(context.Background(), URL)
 	if err != nil {
-		return err
+		return fmt.Errorf("error fetching feed: %w", err)
 	}
 	fmt.Println(feed)
 
