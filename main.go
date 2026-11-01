@@ -5,13 +5,16 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/zwoooz/gator/internal/cli"
+	"github.com/zwoooz/gator/internal/cli/handlers/feeds"
 	"github.com/zwoooz/gator/internal/cli/handlers/users"
 	"github.com/zwoooz/gator/internal/cli/handlers/util"
 	"github.com/zwoooz/gator/internal/config"
 	"github.com/zwoooz/gator/internal/database"
+	"github.com/zwoooz/gator/internal/rss"
 )
 
 func main() {
@@ -39,14 +42,18 @@ func run() int {
 		}
 	}()
 
+	rssClient := rss.NewClient(10 * time.Second)
+
 	s := cli.State{
-		Cfg: &cfg,
-		DB:  database.New(db),
+		Cfg:       cfg,
+		DB:        database.New(db),
+		RssClient: rssClient,
 	}
 
 	cmds := cli.NewCommands()
 	users.Register(cmds)
 	util.Register(cmds)
+	feeds.Register(cmds)
 
 	cmd, err := cli.ParseInput(os.Args[1:])
 	if err != nil {
