@@ -15,19 +15,19 @@ func login(s *cli.State, cmd cli.Command) error {
 	}
 	name := cmd.Args[0]
 
-	_, err := s.DB.GetUser(context.Background(), name)
+	user, err := s.DB.GetUser(context.Background(), name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return fmt.Errorf("user '%s' does not exist", name)
 		}
-		return err
+		return fmt.Errorf("error getting user: %w", err)
 	}
 
-	err = s.Cfg.SetUser(name)
+	err = s.Cfg.SetUser(user.Name)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Active user is now: %s\n", name)
+	fmt.Printf("Active user is now: %s\n", user.Name)
 
 	return nil
 }

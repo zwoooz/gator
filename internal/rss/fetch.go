@@ -7,6 +7,7 @@ import (
 	"html"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 func (client *Client) FetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
@@ -47,4 +48,13 @@ func unescape(feed *RSSFeed) {
 		feed.Channel.Item[i].Title = html.UnescapeString(item.Title)
 		feed.Channel.Item[i].Description = html.UnescapeString(item.Description)
 	}
+}
+
+func ValidateURL(rawURL string) bool {
+	u, err := url.Parse(rawURL)
+	if err != nil || u.Scheme != "http" && u.Scheme != "https" || u.Host == "" {
+		return false
+	}
+
+	return true
 }

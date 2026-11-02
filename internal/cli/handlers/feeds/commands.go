@@ -1,3 +1,4 @@
+// Package feeds contains the command handlers for feed management
 package feeds
 
 import "github.com/zwoooz/gator/internal/cli"
@@ -20,6 +21,18 @@ var specs = []cli.Spec{
 		Usage:       "feeds",
 		Description: "List all tracked feeds and who created them",
 		Handler:     feeds,
+	},
+	{
+		Name:        "follow",
+		Usage:       "follow [feed url]",
+		Description: "Follows an already tracked feed as the logged in user",
+		Handler:     follow,
+	},
+	{
+		Name:        "following",
+		Usage:       "following",
+		Description: "List all feeds beign followed by the logged in user",
+		Handler:     following,
 	},
 }
 
