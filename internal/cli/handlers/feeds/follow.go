@@ -24,9 +24,9 @@ func follow(s *cli.State, cmd cli.Command, user database.User) error {
 	feedRow, err := s.DB.GetFeedByUrl(context.Background(), feedURL)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return fmt.Errorf("feed does not exist")
+			return fmt.Errorf("feed '%s' does not exist", feedURL)
 		}
-		return fmt.Errorf("error getting feed from database: %w", err)
+		return fmt.Errorf("error getting feed information: %w", err)
 	}
 
 	createFeedFollowParams := database.CreateFeedFollowParams{

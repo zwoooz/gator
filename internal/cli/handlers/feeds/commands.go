@@ -29,6 +29,12 @@ var specs = []cli.Spec{
 		Handler:     cli.MiddlewareLoggedIn(follow),
 	},
 	{
+		Name:        "unfollow",
+		Usage:       "unfollow [URL]",
+		Description: "Unfollows a followed feed as the logged in user",
+		Handler:     cli.MiddlewareLoggedIn(unfollow),
+	},
+	{
 		Name:        "following",
 		Usage:       "following",
 		Description: "List all feeds beign followed by the logged in user",

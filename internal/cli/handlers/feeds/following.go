@@ -19,11 +19,12 @@ func following(s *cli.State, cmd cli.Command, user database.User) error {
 	}
 	if len(followed) == 0 {
 		fmt.Println("You are not following any feeds")
+		return nil
 	}
 
 	fmt.Println("Curently followed feeds:")
 	for _, followedRow := range followed {
-		fmt.Printf("* %s\n", followedRow.FeedName)
+		fmt.Printf("* %-24s %s\n", followedRow.FeedName, followedRow.FeedUrl)
 	}
 
 	return nil
