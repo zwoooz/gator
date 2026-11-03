@@ -2,8 +2,6 @@ package feeds
 
 import (
 	"context"
-	"database/sql"
-	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -14,13 +12,9 @@ import (
 	"github.com/zwoooz/gator/internal/rss"
 )
 
-func addFeed(s *cli.State, cmd cli.Command) error {
+func addFeed(s *cli.State, cmd cli.Command, user database.User) error {
 	if len(cmd.Args) != 2 {
 		return fmt.Errorf("%w: expected 2 arguments, found %v", cli.ErrUsage, len(cmd.Args))
-	}
-
-	if s.Cfg.CurrentUserName == "" {
-		return fmt.Errorf("%w: no user currently logged in", cli.ErrUsage)
 	}
 
 	name, feedURL := cmd.Args[0], cmd.Args[1]
@@ -31,14 +25,6 @@ func addFeed(s *cli.State, cmd cli.Command) error {
 	ok := rss.ValidateURL(feedURL)
 	if !ok {
 		return fmt.Errorf("invalid URL provided")
-	}
-
-	user, err := s.DB.GetUser(context.Background(), s.Cfg.CurrentUserName)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return fmt.Errorf("user does not exist")
-		}
-		return fmt.Errorf("error looking up current user: %w", err)
 	}
 
 	createFeedParams := database.CreateFeedParams{

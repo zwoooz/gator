@@ -14,25 +14,12 @@ import (
 	"github.com/zwoooz/gator/internal/database"
 )
 
-func follow(s *cli.State, cmd cli.Command) error {
+func follow(s *cli.State, cmd cli.Command, user database.User) error {
 	if len(cmd.Args) != 1 {
 		return fmt.Errorf("%w: expected 1 argument, found %v", cli.ErrUsage, len(cmd.Args))
 	}
 
 	feedURL := cmd.Args[0]
-
-	name := s.Cfg.CurrentUserName
-	if name == "" {
-		return fmt.Errorf("%w: no user currently logged in", cli.ErrUsage)
-	}
-
-	user, err := s.DB.GetUser(context.Background(), name)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return fmt.Errorf("user '%s' does not exist", name)
-		}
-		return fmt.Errorf("error getting user: %w", err)
-	}
 
 	feedRow, err := s.DB.GetFeedByUrl(context.Background(), feedURL)
 	if err != nil {

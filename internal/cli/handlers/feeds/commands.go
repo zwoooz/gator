@@ -14,7 +14,7 @@ var specs = []cli.Spec{
 		Name:        "addfeed",
 		Usage:       "addfeed [name] [URL]",
 		Description: "Adds feed to the current logged in user",
-		Handler:     addFeed,
+		Handler:     cli.MiddlewareLoggedIn(addFeed),
 	},
 	{
 		Name:        "feeds",
@@ -26,13 +26,13 @@ var specs = []cli.Spec{
 		Name:        "follow",
 		Usage:       "follow [feed url]",
 		Description: "Follows an already tracked feed as the logged in user",
-		Handler:     follow,
+		Handler:     cli.MiddlewareLoggedIn(follow),
 	},
 	{
 		Name:        "following",
 		Usage:       "following",
 		Description: "List all feeds beign followed by the logged in user",
-		Handler:     following,
+		Handler:     cli.MiddlewareLoggedIn(following),
 	},
 }
 
