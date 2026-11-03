@@ -6,8 +6,8 @@ import "github.com/zwoooz/gator/internal/cli"
 var specs = []cli.Spec{
 	{
 		Name:        "agg",
-		Usage:       "agg",
-		Description: "",
+		Usage:       "agg [interval]",
+		Description: "Fetches the current least updated feed on the given interval (e.g. 30s, 5m or 1h), minimum 10s, keeps running until stopped with Ctrl+C",
 		Handler:     agg,
 	},
 	{
