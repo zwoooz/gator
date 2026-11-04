@@ -7,19 +7,19 @@ var specs = []cli.Spec{
 	{
 		Name:        "login",
 		Usage:       "login [username]",
-		Description: "Set the current active user",
+		Description: "Sets the current active user",
 		Handler:     login,
 	},
 	{
 		Name:        "register",
 		Usage:       "register [username]",
-		Description: "Create a new user and log in as them",
+		Description: "Creates a new user and logs in as them",
 		Handler:     register,
 	},
 	{
 		Name:        "reset",
 		Usage:       "reset",
-		Description: "Delete all users (asks for confirmation)",
+		Description: "Wipes every row on every table in the database (asks for confirmation)",
 		Handler:     reset,
 	},
 	{

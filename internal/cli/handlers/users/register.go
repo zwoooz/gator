@@ -38,7 +38,7 @@ func register(s *cli.State, cmd cli.Command) error {
 	if err != nil {
 		return fmt.Errorf("error creating user: %w", err)
 	}
-	fmt.Printf("Created user: %v\n", user)
+	fmt.Printf("Created user: %v\n", user.Name)
 
 	err = s.Cfg.SetUser(name)
 	if err != nil {

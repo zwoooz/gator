@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
+	"github.com/lib/pq/pqerror"
 	"github.com/zwoooz/gator/internal/cli"
 	"github.com/zwoooz/gator/internal/database"
 	"github.com/zwoooz/gator/internal/rss"
@@ -38,6 +40,10 @@ func addFeed(s *cli.State, cmd cli.Command, user database.User) error {
 
 	feed, err := s.DB.CreateFeed(context.Background(), createFeedParams)
 	if err != nil {
+		pqErr := pq.As(err, pqerror.UniqueViolation)
+		if pqErr != nil {
+			return fmt.Errorf("feed already added, follow it instead")
+		}
 		return fmt.Errorf("error creating feed: %w", err)
 	}
 
@@ -53,7 +59,7 @@ func addFeed(s *cli.State, cmd cli.Command, user database.User) error {
 		return fmt.Errorf("error following feed: %w", err)
 	}
 
-	fmt.Println(feed)
+	fmt.Printf("Added feed '%s' with URL '%s'\n", feed.Name, feed.Url)
 
 	return nil
 }

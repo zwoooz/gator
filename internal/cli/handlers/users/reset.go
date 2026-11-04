@@ -15,7 +15,7 @@ func reset(s *cli.State, cmd cli.Command) error {
 		return fmt.Errorf("%w: expected 0 argument, found %v", cli.ErrUsage, len(cmd.Args))
 	}
 
-	ok, err := confirm("This will delete ALL users. Continue?")
+	ok, err := confirm("This will wipe ALL rows from EVERY database table. Continue?")
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,6 @@ func reset(s *cli.State, cmd cli.Command) error {
 }
 
 func confirm(prompt string) (bool, error) {
-	return true, nil // FIXME: bootdev uses reset to get a clean slate for tests, remove after
 	fmt.Printf("%s [y/N]: ", prompt)
 
 	scanner := bufio.NewScanner(os.Stdin)

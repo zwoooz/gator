@@ -29,6 +29,10 @@ func run() int {
 		fmt.Fprintf(os.Stderr, "error reading config: %v\n", err)
 		return 1
 	}
+	if cfg.DBURL == "" {
+		fmt.Fprint(os.Stderr, "'db_url' in config is not set\n")
+		return 1
+	}
 
 	db, err := sql.Open("postgres", cfg.DBURL)
 	if err != nil {

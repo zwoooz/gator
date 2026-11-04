@@ -4,6 +4,7 @@ package config
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -25,7 +26,11 @@ func Read() (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			return &Config{}, nil
+			wErr := write(Config{})
+			if wErr != nil {
+				return &Config{}, fmt.Errorf("no config found, failed generating blank config at '%s'", path)
+			}
+			return &Config{}, fmt.Errorf("no config found, generated blank config at '%s'", path)
 		}
 		return nil, err
 	}

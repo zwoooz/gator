@@ -60,7 +60,7 @@ func scrapeFeeds(s *cli.State) error {
 
 	rssFeed, err := s.RssClient.FetchFeed(context.Background(), nextFeed.Url)
 	if err != nil {
-		return fmt.Errorf("error fetching feed '%s': %w", nextFeed.Url, err)
+		return err
 	}
 
 	postCount := 0

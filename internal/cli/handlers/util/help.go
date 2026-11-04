@@ -25,6 +25,8 @@ func helpSpec(c *cli.Commands) cli.Spec {
 				}
 			}
 
+			fmt.Println("Usage:")
+			fmt.Println("	gator <COMMAND> [ARGUMENTS]")
 			var last string
 			for _, spec := range c.Specs() {
 				if spec.Category != last {
