@@ -40,6 +40,12 @@ var specs = []cli.Spec{
 		Description: "List all feeds beign followed by the logged in user",
 		Handler:     cli.MiddlewareLoggedIn(following),
 	},
+	{
+		Name:        "browse",
+		Usage:       "browse | browse [limit]",
+		Description: "Shows saved posts, with optional limit on amount of posts",
+		Handler:     cli.MiddlewareLoggedIn(browse),
+	},
 }
 
 // Register adds the user management commands to the registry

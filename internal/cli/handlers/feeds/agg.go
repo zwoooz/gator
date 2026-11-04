@@ -6,10 +6,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/zwoooz/gator/internal/cli"
 	"github.com/zwoooz/gator/internal/database"
+	"github.com/zwoooz/gator/internal/rss"
 )
 
 func agg(s *cli.State, cmd cli.Command) error {
@@ -45,12 +48,12 @@ func scrapeFeeds(s *cli.State) error {
 		return fmt.Errorf("error getting feed information: %w", err)
 	}
 
-	params := database.MarkFeedFetchedParams{
+	markFeedFetchedParams := database.MarkFeedFetchedParams{
 		UpdatedAt: time.Now(),
 		ID:        nextFeed.ID,
 	}
 
-	_, err = s.DB.MarkFeedFetched(context.Background(), params)
+	_, err = s.DB.MarkFeedFetched(context.Background(), markFeedFetchedParams)
 	if err != nil {
 		return fmt.Errorf("error marking feed as fetched: %w", err)
 	}
@@ -60,9 +63,37 @@ func scrapeFeeds(s *cli.State) error {
 		return fmt.Errorf("error fetching feed '%s': %w", nextFeed.Url, err)
 	}
 
-	fmt.Printf("\nFrom %s:\n", nextFeed.Name)
+	postCount := 0
 	for _, item := range rssFeed.Channel.Item {
-		fmt.Printf("* %s\n", item.Title)
+		trimmedTitle := strings.TrimSpace(item.Title)
+		trimmedLink := strings.TrimSpace(item.Link)
+		if trimmedTitle == "" || trimmedLink == "" {
+			fmt.Printf("Skipping an item from '%s' with no title or no URL...\n", nextFeed.Name)
+			continue
+		}
+
+		createPostParams := database.CreatePostParams{
+			ID:          uuid.New(),
+			Title:       trimmedTitle,
+			Description: rss.ToNullString(item.Description),
+			Url:         trimmedLink,
+			FeedID:      nextFeed.ID,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+			PublishedAt: rss.ToNullTime(item.PubDate),
+		}
+
+		inserted, err := s.DB.CreatePost(context.Background(), createPostParams)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error saving post %s: %v\n", item.Title, err)
+		}
+		postCount += int(inserted)
 	}
+	if postCount > 0 {
+		fmt.Printf("Saved %d posts from '%s'\n", postCount, nextFeed.Name)
+	} else {
+		fmt.Printf("No new posts from '%s'\n", nextFeed.Name)
+	}
+
 	return nil
 }

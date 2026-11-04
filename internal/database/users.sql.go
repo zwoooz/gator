@@ -19,7 +19,7 @@ VALUES (
   $2,
   $3,
   $4
-  )
+)
 RETURNING id, name, created_at, updated_at
 `
 
