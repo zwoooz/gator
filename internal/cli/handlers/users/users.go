@@ -17,7 +17,8 @@ func users(s *cli.State, cmd cli.Command) error {
 		return fmt.Errorf("error getting users: %w", err)
 	}
 	if len(users) == 0 {
-		return fmt.Errorf("no registered users")
+		fmt.Println("no registered users")
+		return nil
 	}
 
 	for _, user := range users {

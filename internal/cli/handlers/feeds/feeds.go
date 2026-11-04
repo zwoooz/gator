@@ -17,7 +17,8 @@ func feeds(s *cli.State, cmd cli.Command) error {
 		return fmt.Errorf("error getting feeds: %w", err)
 	}
 	if len(feeds) == 0 {
-		return fmt.Errorf("no feeds present")
+		fmt.Println("no feeds present")
+		return nil
 	}
 
 	fmt.Println("Current tracked feeds:")

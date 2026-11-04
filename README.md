@@ -50,7 +50,7 @@ Note that the database setup below needs the repository's migration files, so ev
 
    ```json
    {
-       "db_url": "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable"
+     "db_url": "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable"
    }
    ```
 
@@ -81,25 +81,25 @@ Run `gator help` to see every command and its usage:
 
 ```text
 Usage:
- gator <COMMAND> [ARGUMENTS]
+  gator <COMMAND> [ARGUMENTS]
 
 Util:
- help | help [command]    Shows usage information
+  help | help [command]    Shows usage information
 
 Users:
- login [username]         Sets the current active user
- register [username]      Creates a new user and logs in as them
- reset                    Wipes every row on every table in the database (asks for confirmation)
- users                    Lists every user in the database, shows who is currently logged in
+  login [username]         Sets the current active user
+  register [username]      Creates a new user and logs in as them
+  reset                    Wipes every row on every table in the database (asks for confirmation)
+  users                    Lists every user in the database, shows who is currently logged in
 
 Feeds:
- addfeed [name] [URL]     Adds feed to the current logged in user
- agg [interval]           Fetches the current least updated feed on the given interval (e.g. 30s, 5m or 1h), minimum 10s, keeps running until stopped with Ctrl+C
- browse | browse [limit]  Shows saved posts, with optional limit on amount of posts
- feeds                    List all tracked feeds and who created them
- follow [URL]             Follows an already tracked feed as the logged in user
- following                List all feeds followed by the logged in user
- unfollow [URL]           Unfollows a followed feed as the logged in user
+  addfeed [name] [URL]     Adds feed to the current logged in user
+  agg [interval]           Fetches the current least updated feed on the given interval (e.g. 30s, 5m or 1h), minimum 10s, keeps running until stopped with Ctrl+C
+  browse | browse [limit]  Shows saved posts, with optional limit on amount of posts
+  feeds                    List all tracked feeds and who created them
+  follow [URL]             Follows an already tracked feed as the logged in user
+  following                List all feeds followed by the logged in user
+  unfollow [URL]           Unfollows a followed feed as the logged in user
 ```
 
 > **Warning:** `reset` deletes all data in every table. It asks for confirmation first, but it can't be undone.

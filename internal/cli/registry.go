@@ -51,7 +51,7 @@ func (c *Commands) Lookup(name string) (Spec, bool) {
 	return spec, ok
 }
 
-// Specs returns all commands ordered by categiry, then name
+// Specs returns all commands ordered by category, then name
 func (c *Commands) Specs() []Spec {
 	out := make([]Spec, 0, len(c.specs))
 	for _, spec := range c.specs {

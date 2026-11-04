@@ -22,7 +22,7 @@ func following(s *cli.State, cmd cli.Command, user database.User) error {
 		return nil
 	}
 
-	fmt.Println("Curently followed feeds:")
+	fmt.Println("Currently followed feeds:")
 	for _, followedRow := range followed {
 		fmt.Printf("* %-24s %s\n", followedRow.FeedName, followedRow.FeedUrl)
 	}

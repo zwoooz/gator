@@ -1,6 +1,4 @@
-// Package rss
-// WARN: above is linting supresson so it doesn't mark everything in package rss
-// write and actual description here later and remove this warning
+// Package rss contains the http client, it's methods, and everything required to handle the rss feeds
 package rss
 
 import (

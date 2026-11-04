@@ -26,8 +26,12 @@ func browse(s *cli.State, cmd cli.Command, user database.User) error {
 			limit = parsed
 		}
 		if limit < 1 {
-			fmt.Fprintf(os.Stderr, "Invalid limit '%d' used, defaulting to 2\n", limit)
-			limit = 2
+			fmt.Fprintf(os.Stderr, "negative limit '%d' used, setting limit to '1'\n", limit)
+			limit = 1
+		}
+		if limit > 100 {
+			fmt.Fprintf(os.Stderr, "Too large limit '%d' used, setting limit to '100'\n", limit)
+			limit = 100
 		}
 	}
 

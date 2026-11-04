@@ -17,7 +17,8 @@ SELECT
   users.name AS created_by
 FROM
   feeds
-  INNER JOIN users ON feeds.user_id = users.id;
+  INNER JOIN users ON feeds.user_id = users.id
+ORDER BY users.name;
 
 -- name: GetFeedByUrl :one
 SELECT

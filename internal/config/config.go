@@ -28,7 +28,7 @@ func Read() (*Config, error) {
 		if errors.Is(err, fs.ErrNotExist) {
 			wErr := write(Config{})
 			if wErr != nil {
-				return &Config{}, fmt.Errorf("no config found, failed generating blank config at '%s'", path)
+				return &Config{}, fmt.Errorf("no config found, failed generating blank config at '%s': %w", path, wErr)
 			}
 			return &Config{}, fmt.Errorf("no config found, generated blank config at '%s'", path)
 		}

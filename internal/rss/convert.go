@@ -36,7 +36,7 @@ func ToNullTime(str string) sql.NullTime {
 			continue
 		}
 		return sql.NullTime{
-			Time:  parsed,
+			Time:  parsed.UTC(),
 			Valid: true,
 		}
 	}

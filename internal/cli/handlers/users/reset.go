@@ -28,7 +28,7 @@ func reset(s *cli.State, cmd cli.Command) error {
 	if err != nil {
 		return fmt.Errorf("error resetting users: %w", err)
 	}
-	fmt.Println("Delted all rows in users table")
+	fmt.Println("Deleted all rows in users table")
 
 	return nil
 }

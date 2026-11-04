@@ -3,7 +3,6 @@ package feeds
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,10 +19,6 @@ func addFeed(s *cli.State, cmd cli.Command, user database.User) error {
 	}
 
 	name, feedURL := cmd.Args[0], cmd.Args[1]
-	u, err := url.Parse(feedURL)
-	if err != nil || u.Scheme != "http" && u.Scheme != "https" || u.Host == "" {
-		return fmt.Errorf("%w: invalid URL provided", cli.ErrUsage)
-	}
 	ok := rss.ValidateURL(feedURL)
 	if !ok {
 		return fmt.Errorf("invalid URL provided")

@@ -68,7 +68,7 @@ func scrapeFeeds(s *cli.State) error {
 		trimmedTitle := strings.TrimSpace(item.Title)
 		trimmedLink := strings.TrimSpace(item.Link)
 		if trimmedTitle == "" || trimmedLink == "" {
-			fmt.Printf("Skipping an item from '%s' with no title or no URL...\n", nextFeed.Name)
+			fmt.Fprintf(os.Stderr, "Skipping an item from '%s' with no title or no URL...\n", nextFeed.Name)
 			continue
 		}
 
@@ -86,6 +86,7 @@ func scrapeFeeds(s *cli.State) error {
 		inserted, err := s.DB.CreatePost(context.Background(), createPostParams)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "error saving post %s: %v\n", item.Title, err)
+			continue
 		}
 		postCount += int(inserted)
 	}

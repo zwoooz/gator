@@ -48,7 +48,7 @@ var specs = []cli.Spec{
 	},
 }
 
-// Register adds the user management commands to the registry
+// Register adds the feed management commands to the registry
 func Register(cmds *cli.Commands) {
 	for _, spec := range specs {
 		spec.Category = "Feeds"
