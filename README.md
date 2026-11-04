@@ -16,7 +16,6 @@ gator is a command-line RSS aggregator written in Go as a guided project for boo
 
 * Go (>= 1.27.3), needed to build or install gator
 * PostgreSQL, running and reachable, needed whenever gator runs
-* Git, needed to fetch the migration files
 * [goose](https://github.com/pressly/goose), used once to set up the database schema
 
 Optional:
@@ -28,7 +27,7 @@ Optional:
 #### With `go install`
 
 ```bash
-$ go install github.com/zwoooz/gator@latest
+go install github.com/zwoooz/gator@latest
 ```
 
 This places the `gator` binary in `~/go/bin`, so make sure that directory is on your `PATH`.
@@ -36,9 +35,9 @@ This places the `gator` binary in `~/go/bin`, so make sure that directory is on 
 #### From source
 
 ```bash
-$ git clone https://github.com/zwoooz/gator.git
-$ cd gator
-$ go build
+git clone https://github.com/zwoooz/gator.git
+cd gator
+go build
 ```
 
 This creates a `gator` binary in the project directory. The examples below use `gator`; if you built from source and the binary isn't on your `PATH`, run it as `./gator`.
@@ -59,19 +58,19 @@ Note that the database setup below needs the repository's migration files, so ev
 
 If the file doesn't exist, gator creates one with empty values the first time you run it and exits. Fill in your `db_url` and run it again. The `login` and `register` commands store the current user in this file, so you don't need to edit that part by hand. Do note this file contains your database password.
 
-2. Create the database:
+1. Create the database:
 
 ```bash
-$ createdb gator
+createdb gator
 ```
 
-3. Run the migrations. Clone the repository if you haven't already (skip the first two lines if you built from source), then install [goose](https://github.com/pressly/goose) and apply the migrations. Use the same URL as in your config:
+1. Run the migrations. Clone the repository if you haven't already (skip the first two lines if you built from source), then install [goose](https://github.com/pressly/goose) and apply the migrations. Use the same URL as in your config:
 
 ```bash
-$ git clone https://github.com/zwoooz/gator.git
-$ cd gator
-$ go install github.com/pressly/goose/v3/cmd/goose@latest
-$ goose -dir sql/schema postgres "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable" up
+git clone https://github.com/zwoooz/gator.git
+cd gator
+go install github.com/pressly/goose/v3/cmd/goose@latest
+goose -dir sql/schema postgres "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable" up
 ```
 
 `up` applies every migration, so a fresh database ends up on the latest version. To check, replace `up` with `status`. Like gator, goose is installed to `~/go/bin`.
@@ -82,25 +81,25 @@ Run `gator help` to see every command and its usage:
 
 ```text
 Usage:
-	gator <COMMAND> [ARGUMENTS]
+ gator <COMMAND> [ARGUMENTS]
 
 Util:
-	help | help [command]    Shows usage information
+ help | help [command]    Shows usage information
 
 Users:
-	login [username]         Sets the current active user
-	register [username]      Creates a new user and logs in as them
-	reset                    Wipes every row on every table in the database (asks for confirmation)
-	users                    Lists every user in the database, shows who is currently logged in
+ login [username]         Sets the current active user
+ register [username]      Creates a new user and logs in as them
+ reset                    Wipes every row on every table in the database (asks for confirmation)
+ users                    Lists every user in the database, shows who is currently logged in
 
 Feeds:
-	addfeed [name] [URL]     Adds feed to the current logged in user
-	agg [interval]           Fetches the current least updated feed on the given interval (e.g. 30s, 5m or 1h), minimum 10s, keeps running until stopped with Ctrl+C
-	browse | browse [limit]  Shows saved posts, with optional limit on amount of posts
-	feeds                    List all tracked feeds and who created them
-	follow [URL]             Follows an already tracked feed as the logged in user
-	following                List all feeds followed by the logged in user
-	unfollow [URL]           Unfollows a followed feed as the logged in user
+ addfeed [name] [URL]     Adds feed to the current logged in user
+ agg [interval]           Fetches the current least updated feed on the given interval (e.g. 30s, 5m or 1h), minimum 10s, keeps running until stopped with Ctrl+C
+ browse | browse [limit]  Shows saved posts, with optional limit on amount of posts
+ feeds                    List all tracked feeds and who created them
+ follow [URL]             Follows an already tracked feed as the logged in user
+ following                List all feeds followed by the logged in user
+ unfollow [URL]           Unfollows a followed feed as the logged in user
 ```
 
 > **Warning:** `reset` deletes all data in every table. It asks for confirmation first, but it can't be undone.
@@ -108,10 +107,10 @@ Feeds:
 ### Example
 
 ```bash
-$ gator register zwoooz
-$ gator addfeed "Wagslane Blog" https://www.wagslane.dev/index.xml
-$ gator agg 1m      # leave this running in its own terminal
-$ gator browse 10
+gator register zwoooz
+gator addfeed "Wagslane Blog" https://www.wagslane.dev/index.xml
+gator agg 1m      # leave this running in its own terminal
+gator browse 10
 ```
 
 `agg` runs until you stop it with Ctrl+C, so use a second terminal for `browse` while it runs.
