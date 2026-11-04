@@ -48,32 +48,32 @@ Note that the database setup below needs the repository's migration files, so ev
 
 1. Create a `.gatorconfig.json` in your home directory with the following contents:
 
-```json
-{
-    "db_url": "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable"
-}
-```
+   ```json
+   {
+       "db_url": "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable"
+   }
+   ```
 
-`USER` and `PASSWORD` are the credentials for your PostgreSQL server, and `5432` is the default port. Change it if your database listens elsewhere.
+   `USER` and `PASSWORD` are the credentials for your PostgreSQL server, and `5432` is the default port. Change it if your database listens elsewhere.
 
-If the file doesn't exist, gator creates one with empty values the first time you run it and exits. Fill in your `db_url` and run it again. The `login` and `register` commands store the current user in this file, so you don't need to edit that part by hand. Do note this file contains your database password.
+   If the file doesn't exist, gator creates one with empty values the first time you run it and exits. Fill in your `db_url` and run it again. The `login` and `register` commands store the current user in this file, so you don't need to edit that part by hand. Do note this file contains your database password.
 
-1. Create the database:
+2. Create the database:
 
-```bash
-createdb gator
-```
+   ```bash
+   createdb gator
+   ```
 
-1. Run the migrations. Clone the repository if you haven't already (skip the first two lines if you built from source), then install [goose](https://github.com/pressly/goose) and apply the migrations. Use the same URL as in your config:
+3. Run the migrations. Clone the repository if you haven't already (skip the first two lines if you built from source), then install [goose](https://github.com/pressly/goose) and apply the migrations. Use the same URL as in your config:
 
-```bash
-git clone https://github.com/zwoooz/gator.git
-cd gator
-go install github.com/pressly/goose/v3/cmd/goose@latest
-goose -dir sql/schema postgres "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable" up
-```
+   ```bash
+   git clone https://github.com/zwoooz/gator.git
+   cd gator
+   go install github.com/pressly/goose/v3/cmd/goose@latest
+   goose -dir sql/schema postgres "postgres://USER:PASSWORD@localhost:5432/gator?sslmode=disable" up
+   ```
 
-`up` applies every migration, so a fresh database ends up on the latest version. To check, replace `up` with `status`. Like gator, goose is installed to `~/go/bin`.
+   `up` applies every migration, so a fresh database ends up on the latest version. To check, replace `up` with `status`. Like gator, goose is installed to `~/go/bin`.
 
 ## Usage
 
