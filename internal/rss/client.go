@@ -1,4 +1,4 @@
-// Package rss contains the http client, it's methods, and everything required to handle the rss feeds
+// Package rss contains the http client, its methods, and everything required to handle the rss feeds
 package rss
 
 import (
